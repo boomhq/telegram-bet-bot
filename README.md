@@ -1,6 +1,37 @@
 BET BOT
 =======
 
+Instalation
+-----------
+##### !!PYTHON 2.7!!
+
+`pip install -r requirements.txt`
+
+set environement variable betBOTSchema and betBOT' like 
+
+`ENV betBOTSchema='sqlite:///db.sqlite'`
+
+`ENV betBOT='TELEGRAM_TOKEN'`
+
+
+
+`python betMODEL.py`
+
+And you will be ready to start it:
+
+`python betBOT.py`
+
+
+Bot Params
+----------
+
+lang='es' -> Will change the language of the bot, to add a new language just
+edit lang.json files.
+
+admins="[12412421, 4124124]" -> Will change the administrators of the bot (to
+add matches and delete matches). It must be a list within a string containing
+the id's of the admins separated by commas.
+
 Summary
 -------
 
@@ -49,32 +80,3 @@ TABLES
 > Telegram nick will be used to display the top 10.
 
 
-Bot Params
-----------
-
-lang='es' -> Will change the language of the bot, to add a new language just
-edit lang.json files.
-
-admins="[12412421, 4124124]" -> Will change the administrators of the bot (to
-add matches and delete matches). It must be a list within a string containing
-the id's of the admins separated by commas.
-
-Instalation
------------
-##### !!PYTHON 2.7!!
-
-`pip install -r requirements.txt`
-
-set environement variable betBOTSchema and betBOT' like 
-
-`ENV betBOTSchema='sqlite:///db.sqlite'`
-
-`ENV betBOT='TELEGRAM_TOKEN'`
-
-
-
-`python betMODEL.py`
-
-And you will be ready to start it:
-
-`python betBOT.py`
