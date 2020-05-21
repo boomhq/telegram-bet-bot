@@ -61,8 +61,18 @@ the id's of the admins separated by commas.
 
 Instalation
 -----------
+##### !!PYTHON 2.7!!
 
-`pip install requirements.txt`
+`pip install -r requirements.txt`
+
+set environement variable betBOTSchema and betBOT' like 
+
+`ENV betBOTSchema='sqlite:///db.sqlite'`
+
+`ENV betBOT='TELEGRAM_TOKEN'`
+
+
+
 `python betMODEL.py`
 
 And you will be ready to start it:
