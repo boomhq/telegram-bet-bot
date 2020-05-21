@@ -42,6 +42,7 @@ class User(Base):
     telegram = Column(String)
     notify = Column(Integer)
 
+
 schema = os.environ.get('betBOTSchema')
 engine = create_engine(schema)
 Base.metadata.create_all(engine)
