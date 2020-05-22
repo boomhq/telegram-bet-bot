@@ -6,27 +6,26 @@ import unicodedata
 import sys
 import ast
 import datetime
+from Settings.settings import *
 
 from telebot import TeleBot, types
 from emoji import emojize
-from betMODEL import Match, Ranking, Bet, User, get_matches, get_bets, \
+from Models.betMODEL import Match, Ranking, Bet, User, get_matches, get_bets, \
      get_users, get_ranking, add, update, delete, get_session
-from betLANG import gettext, change_lang
 
 
-token = os.environ.get('betBOT')
+token = os.environ.get('BET_BOT_API_KEY')
 
+#Getter for translation
 _ = gettext
 
 if not token:
     sys.exit(_('Add an enviroment variable $betBOT with your token.'))
 
-if sys.argv[1] and 'lang=' in sys.argv[1]:
-    lang = sys.argv[1].split('=')[1]
-    change_lang(lang)
+lang = os.environ.get('BET_BOT_LANG')
+change_lang(lang)
 
-if sys.argv[2] and 'admins=' in sys.argv[2]:
-    administrators = ast.literal_eval(sys.argv[2][7:])
+administrators = ast.literal_eval(os.environ.get('BET_BOT_ADMINS'))
 
 
 bot = TeleBot(token)

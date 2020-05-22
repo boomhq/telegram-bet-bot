@@ -43,7 +43,7 @@ class User(Base):
     notify = Column(Integer)
 
 
-schema = os.environ.get('betBOTSchema')
+schema = os.environ.get('BET_BOT_SCHEMA')
 engine = create_engine(schema)
 Base.metadata.create_all(engine)
 
