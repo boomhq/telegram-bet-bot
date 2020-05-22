@@ -7,30 +7,26 @@ Instalation
 
 `pip install -r requirements.txt`
 
-set environement variable betBOTSchema and betBOT' like 
+Copy `.env.exemple` to `.env`
 
-`ENV betBOTSchema='sqlite:///db.sqlite'`
+Edit `.env` and set all params 
 
-`ENV betBOT='TELEGRAM_TOKEN'`
-
-
-
-`python betMODEL.py`
+Start `python Models/betMODEL.py` for initiate database structure
 
 And you will be ready to start it:
 
 `python betBOT.py`
 
 
-Bot Params
+Bot Params (.env file)
 ----------
 
-lang='es' -> Will change the language of the bot, to add a new language just
-edit lang.json files.
+BET_BOT_LANG=fr -> Will change the language of the bot, to add a new language just
+edit Translations/lang.json files.
 
-admins="[12412421, 4124124]" -> Will change the administrators of the bot (to
+BET_BOT_ADMINS="[12412421, 4124124]" -> Will change the administrators of the bot (to
 add matches and delete matches). It must be a list within a string containing
-the id's of the admins separated by commas.
+the telegram id's of the admins separated by commas.
 
 Summary
 -------
