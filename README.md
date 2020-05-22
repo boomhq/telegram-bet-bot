@@ -3,7 +3,7 @@ BET BOT
 
 Instalation
 -----------
-##### !!PYTHON 2.7!!
+##### !!PYTHON 3!!
 
 `pip install -r requirements.txt`
 

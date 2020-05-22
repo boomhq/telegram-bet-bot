@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Load Translation
-texts = {}
 lang = "en"
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -21,7 +20,7 @@ def change_lang(lan="fr"):
     if texts.get(lan):
         lang = lan
     else:
-        print "Language not translated yet."
+        print("Language not translated yet.")
     return lang
 
 

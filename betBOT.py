@@ -256,12 +256,15 @@ def msg_add_match_team2(message):
 @bot.message_handler(func=lambda message: get_user_step(message.from_user.id) == 23)
 def msg_add_match_date(message):
     chat_id = message.chat.id
-    markup = types.ReplyKeyboardHide()
-    bot.send_message(chat_id, _("Date set correctly."), reply_markup=markup)
-    markup = types.ForceReply(selective=False)
-    to_add[message.from_user.id]["date"] = message.text
-    bot.send_message(message.chat.id, _("Match hour:"), reply_markup=markup)
-    userStep[message.from_user.id] = 24
+    try:
+        markup = types.ReplyKeyboardHide()
+        bot.send_message(chat_id, _("Date set correctly."), reply_markup=markup)
+        markup = types.ForceReply(selective=False)
+        to_add[message.from_user.id]["date"] = message.text
+        bot.send_message(message.chat.id, _("Match hour:"), reply_markup=markup)
+        userStep[message.from_user.id] = 24
+    except ValueError:
+        bot.send_message(message.chat.id, _("Action cancelled."), reply_markup=markup)
 
 
 @bot.message_handler(func=lambda message: get_user_step(message.from_user.id) == 24)
@@ -625,7 +628,7 @@ def get_user(message):
 
 @bot.message_handler(commands=["test"])
 def test(message):
-    print message.from_user.first_name, message.from_user.last_name
+    print(message.from_user.first_name, message.from_user.last_name)
 
 
 def emoji(code):
