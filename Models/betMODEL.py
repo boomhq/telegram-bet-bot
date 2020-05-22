@@ -10,7 +10,7 @@ Base = declarative_base()
 
 
 class Match(Base):
-    __tablename__ = 'matches'
+    __tablename__ = "matches"
     id = Column(Integer, primary_key=True)
     start_date = Column(DateTime)
     team1 = Column(String(50))
@@ -20,7 +20,7 @@ class Match(Base):
 
 
 class Ranking(Base):
-    __tablename__ = 'ranking'
+    __tablename__ = "ranking"
     id = Column(Integer, primary_key=True)
     player_id = Column(Integer)
     wins = Column(Integer, default=0)
@@ -28,7 +28,7 @@ class Ranking(Base):
 
 
 class Bet(Base):
-    __tablename__ = 'bets'
+    __tablename__ = "bets"
     id = Column(Integer, primary_key=True)
     player_id = Column(Integer)
     match = Column(Integer)
@@ -36,14 +36,14 @@ class Bet(Base):
 
 
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
     id = Column(Integer, primary_key=True)
     player_id = Column(Integer)
     telegram = Column(String)
     notify = Column(Integer)
 
 
-schema = os.environ.get('BET_BOT_SCHEMA')
+schema = os.environ.get("BET_BOT_SCHEMA")
 engine = create_engine(schema)
 Base.metadata.create_all(engine)
 

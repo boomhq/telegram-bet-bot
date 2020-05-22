@@ -6,22 +6,22 @@ from dotenv import load_dotenv
 # Load .ENV
 load_dotenv()
 
-#Load Translation
+# Load Translation
 texts = {}
-lang = 'en'
+lang = "en"
 path = os.path.dirname(os.path.abspath(__file__))
 
 
-with open(path + '/../lang.json') as json_data:
+with open(path + "/../Translations/lang.json") as json_data:
     texts = json.load(json_data)
 
 
-def change_lang(lan='fr'):
+def change_lang(lan="fr"):
     global lang
     if texts.get(lan):
         lang = lan
     else:
-        print 'Language not translated yet.'
+        print "Language not translated yet."
     return lang
 
 
@@ -29,4 +29,3 @@ def gettext(string):
     if texts.get(lang) and texts[lang].get(string):
         return texts[lang][string]
     return string
-
