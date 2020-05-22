@@ -87,6 +87,7 @@
     "You will be notified when a match is added.": "Vous serez notifié des nouveaux matchs ajoutés",
     "Notify when a match is added.": "Etre notifié de l'ajout d'un  match",
     "The format of the date/hour is incorrect.": "le format de la date ou heure est incorrecte",
-    "An error ocurred adding the match.": "Une erreur est apparue lors de l'ajout du match."
+    "An error ocurred adding the match.": "Une erreur est apparue lors de l'ajout du match.",
+    "Title bet" : "Titre du call/pari"
   }
 }
