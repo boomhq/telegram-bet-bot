@@ -66,7 +66,6 @@ def get_user_step(uid):
         return userStep[uid]
 
 
-
 @bot.message_handler(commands=["bet"])
 def do_bet(message):
     if message.chat.id != message.from_user.id:
@@ -79,8 +78,8 @@ def do_bet(message):
     query = get_matches()
     matches = (
         query.filter(Match.score1 == None)
-            .filter(Match.start_date > datetime.datetime.now())
-            .all()
+        .filter(Match.start_date > datetime.datetime.now())
+        .all()
     )
     query = get_bets()
     user_bets = query.filter(Bet.player_id == message.from_user.id).all()
@@ -102,6 +101,11 @@ def do_bet(message):
 @bot.message_handler(func=lambda message: get_user_step(message.from_user.id) == 51)
 def do_bet_winner(message):
     chat_id = message.chat.id
+    if message.text == _("Cancel"):
+        markup = types.ReplyKeyboardRemove()
+        bot.send_message(message.chat.id, _("Action cancelled."), reply_markup=markup)
+        userStep[message.from_user.id] = None
+        return
     mid = message.text.split(" ")
     query = get_matches()
     try:
@@ -110,6 +114,7 @@ def do_bet_winner(message):
         markup = types.ReplyKeyboardMarkup(row_width=2)
         markup.add(match.team1)
         markup.add(match.team2)
+        markup.add(_("Cancel"))
         bot.send_message(chat_id, _("Choose a winner:"), reply_markup=markup)
         userStep[message.from_user.id] = 52
     except ValueError:
@@ -122,21 +127,23 @@ def set_match_winner_db(message):
     userStep[message.from_user.id] = None
     chat_id = message.chat.id
     markup = types.ReplyKeyboardRemove()
+    if message.text == _("Cancel"):
+        bot.send_message(message.chat.id, _("Action cancelled."), reply_markup=markup)
+        userStep[message.from_user.id] = None
+        return
     mid = to_bet[message.from_user.id]
     query = get_bets()
     # TODO Add unique constraint on sql match and return error if already bet
     already_bet = (
         query.filter(Bet.player_id == message.from_user.id)
-            .filter(Bet.match == mid[0])
-            .first()
+        .filter(Bet.match == mid[0])
+        .first()
     )
     if already_bet:
         already_bet.bet = message.text
         already_bet.match = mid[0]
         update()
-        bot.send_message(
-            chat_id, _("New bet correctly update"), reply_markup=markup
-        )
+        bot.send_message(chat_id, _("New bet correctly update"), reply_markup=markup)
         userStep[message.from_user.id] = None
         return
     new_bet = Bet(player_id=message.from_user.id, match=mid[0], bet=message.text)
@@ -168,30 +175,30 @@ def list_bets(message):
             odd1 = bets1 * 100 / (bets1 + bets2)
             odd2 = bets2 * 100 / (bets1 + bets2)
         text += (
-                " *"
-                + m.title
-                + "* "
-                + "\n"
-                + "\n"
-                + emoji(":calendar:")
-                + date
-                + " "
-                + emoji(":clock1:")
-                + hour
-                + " "
-                + emoji(" :fast_forward:")
-                + " *"
-                + m.team1
-                + "* "
-                + str(odd1)
-                + "%"
-                + " "
-                + emoji(":vs:")
-                + " "
-                + str(odd2)
-                + "% *"
-                + m.team2
-                + "*\n"
+            " *"
+            + m.title
+            + "* "
+            + "\n"
+            + emoji(":calendar:")
+            + date
+            + " "
+            + emoji(":clock1:")
+            + hour
+            + " "
+            + emoji(" :fast_forward:")
+            + " *"
+            + m.team1
+            + "* "
+            + str(odd1)
+            + "%"
+            + " "
+            + emoji(":vs:")
+            + " "
+            + str(odd2)
+            + "% *"
+            + m.team2
+            + "\n"
+            + "*\n"
         )
     if not matches:
         bot.send_message(message.chat.id, _("No matches available."))
@@ -249,13 +256,7 @@ def msg_add_match_team1(message):
 @bot.message_handler(func=lambda message: get_user_step(message.from_user.id) == 22)
 def msg_add_match_team2(message):
     to_add[message.from_user.id]["Team2"] = message.text
-    markup = types.ReplyKeyboardMarkup(row_width=3)
-    buttons = []
-    for i in range(0, 6):
-        date = datetime.datetime.today() + datetime.timedelta(days=i)
-        buttons.append(date.strftime("%d-%m-%Y"))
-    markup.add(buttons[0], buttons[1], buttons[2])
-    markup.add(buttons[3], buttons[4], buttons[5])
+    markup = types.ForceReply(selective=False)
     bot.send_message(message.chat.id, _("Match date:"), reply_markup=markup)
     userStep[message.from_user.id] = 23
 
@@ -289,7 +290,12 @@ def add_match_db(message):
         )
         return
 
-    new_match = Match(title=teams["Title"], team1=teams["Team1"], team2=teams["Team2"], start_date=date_time)
+    new_match = Match(
+        title=teams["Title"],
+        team1=teams["Team1"],
+        team2=teams["Team2"],
+        start_date=date_time,
+    )
     try:
         add(new_match)
     except Exception:
@@ -304,7 +310,12 @@ def add_match_db(message):
             bot.send_message(
                 u.player_id,
                 _("New match added %(3)s - %(1)s %(vs)s %(2)s")
-                % {"1": teams["Team1"], "vs": emoji(":vs:"), "2": teams["Team2"], "3": teams["title"]},
+                % {
+                    "1": teams["Team1"],
+                    "vs": emoji(":vs:"),
+                    "2": teams["Team2"],
+                    "3": teams["title"],
+                },
             )
         except Exception:
             # Set notify to 0 if error (because user stopped bot /stop)
@@ -339,7 +350,7 @@ def set_winner(message):
 
 @bot.message_handler(func=lambda message: get_user_step(message.from_user.id) == 31)
 def confirm_match_choose(message):
-    if message.text == "cancel" or message.text == "Cancel":
+    if message.text == _("Cancel"):
         markup = types.ReplyKeyboardRemove()
         bot.send_message(message.chat.id, _("Action cancelled."), reply_markup=markup)
         userStep[message.from_user.id] = None
@@ -364,7 +375,7 @@ def confirm_match_choose(message):
 def second_score(message):
     chat_id = message.chat.id
     markup = types.ForceReply(selective=False)
-    if message.text == "cancel" or message.text == "Cancel":
+    if message.text == _("Cancel"):
         markup = types.ReplyKeyboardRemove()
         bot.send_message(message.chat.id, _("Action cancelled."), reply_markup=markup)
         userStep[message.from_user.id] = None
@@ -384,7 +395,7 @@ def second_score(message):
 def set_bet_db(message):
     chat_id = message.chat.id
     markup = types.ReplyKeyboardRemove()
-    if message.text == "cancel" or message.text == "Cancel":
+    if message.text == _("Cancel"):
         markup = types.ReplyKeyboardRemove()
         bot.send_message(message.chat.id, _("Action cancelled."), reply_markup=markup)
         userStep[message.from_user.id] = None
@@ -393,7 +404,7 @@ def set_bet_db(message):
     if not message.text.isdigit():
         set_winner(message)
         return
-    
+
     bot.send_message(chat_id, _("Winner correctly selected."), reply_markup=markup)
     query = get_matches()
     match = query.filter(Match.id == to_winner[message.from_user.id]["id"]).first()
@@ -470,7 +481,7 @@ def top_10(message):
     text = _("No user with any resolved bet.")
     if rankings:
         text = (
-                emoji(":trophy:") + " " + _("TOP 10 WINS") + " " + emoji(":trophy:") + "\n"
+            emoji(":trophy:") + " " + _("TOP 10 WINS") + " " + emoji(":trophy:") + "\n"
         )
         text += "-----------------\n"
 
@@ -514,10 +525,10 @@ def top_10_rate(message):
         username = query.filter(User.player_id == ra[1]).first()
         # textu = '{0: <15}'.format(username.telegram)
         textu = "<pre>"
-        textu += username.telegram.encode("UTF-8")
+        textu += username.telegram
         textu += " " * (20 - len(textu)) + " "
         textu += "</pre>"
-        textu += emoji(":game_die:").encode("UTF-8")
+        textu += emoji(":game_die:")
         textu += " " + str(ra[2]) + "% \n"
         text += textu
     bot.send_message(chat_id, text, parse_mode="html")
@@ -531,15 +542,15 @@ def mestats(message):
     query = get_users()
     username = query.filter(User.player_id == message.from_user.id).first()
     text = _("You do not have any resolved bet yet.")
-    if username and username.telegram:
-        text = username.telegram.encode("UTF-8") + " \n"
+    if username and username.telegram and ra:
+        text = username.telegram.encode("UTF-8")
         text += emoji(":trophy:") + " " + str(ra.wins) + " \n"
         text += emoji(":1234:") + " " + str(ra.total) + " \n"
         text += (
-                emoji(":chart_with_upwards_trend:")
-                + " "
-                + str(ra.wins * 100 / ra.total)
-                + "%"
+            emoji(":chart_with_upwards_trend:")
+            + " "
+            + str(ra.wins * 100 / ra.total)
+            + "%"
         )
     bot.send_message(chat_id, text)
 
@@ -554,18 +565,18 @@ def mybets(message):
         m = query.filter(Match.id == b.match).first()
         if m and (m.start_date > datetime.datetime.now() or m.score1 == None):
             text += (
-                    m.title
-                    + " "
-                    + m.team1
-                    + " "
-                    + emoji(":vs:")
-                    + " "
-                    + m.team2
-                    + " - "
-                    + emoji(":video_game:")
-                    + " <b>"
-                    + b.bet
-                    + "</b>\n"
+                m.title
+                + " "
+                + m.team1
+                + " "
+                + emoji(":vs:")
+                + " "
+                + m.team2
+                + " - "
+                + emoji(":video_game:")
+                + " <b>"
+                + b.bet
+                + "</b>\n"
             )
     if not bets or not text:
         bot.send_message(message.chat.id, _("No bets available."))
@@ -580,8 +591,8 @@ def history(message):
         query.filter(
             Match.start_date > datetime.datetime.now() - datetime.timedelta(days=5)
         )
-            .filter(Match.score1 != None)
-            .all()
+        .filter(Match.score1 != None)
+        .all()
     )
     text = ""
     count = 0
@@ -595,24 +606,23 @@ def history(message):
         if m.score2 or m.score2 == 0 and m.score1 or m.score1 == 0:
             winner = m.team1 if m.score2 < m.score1 else m.team2
         text += (
-                m.title
-                + " "
-                  "<b> "
-                + score1
-                + "</b> "
-                + m.team1
-                + " "
-                + emoji(":vs:")
-                + " <b>"
-                + score2
-                + "</b> "
-                + " "
-                + m.team2
-                + " - "
-                + emoji(":trophy:")
-                + " <b>"
-                + winner
-                + "</b>\n"
+            m.title + " "
+            "<b> "
+            + score1
+            + "</b> "
+            + m.team1
+            + " "
+            + emoji(":vs:")
+            + " <b>"
+            + score2
+            + "</b> "
+            + " "
+            + m.team2
+            + " - "
+            + emoji(":trophy:")
+            + " <b>"
+            + winner
+            + "</b>\n"
         )
     if not matches:
         bot.send_message(message.chat.id, _("No bets available."))

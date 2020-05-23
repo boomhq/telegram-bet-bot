@@ -10,7 +10,11 @@ Base = declarative_base()
 
 class Match(Base):
     __tablename__ = "matches"
-    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
+    __table_args__ = {
+        "mysql_engine": "InnoDB",
+        "mysql_charset": "utf8mb4",
+        "mysql_collate": "utf8mb4_unicode_ci",
+    }
     id = Column(Integer, primary_key=True)
     title = Column(String(500))
     start_date = Column(DateTime)
@@ -22,7 +26,11 @@ class Match(Base):
 
 class Ranking(Base):
     __tablename__ = "ranking"
-    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
+    __table_args__ = {
+        "mysql_engine": "InnoDB",
+        "mysql_charset": "utf8mb4",
+        "mysql_collate": "utf8mb4_unicode_ci",
+    }
     id = Column(Integer, primary_key=True)
     player_id = Column(Integer)
     wins = Column(Integer, default=0)
@@ -31,7 +39,11 @@ class Ranking(Base):
 
 class Bet(Base):
     __tablename__ = "bets"
-    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
+    __table_args__ = {
+        "mysql_engine": "InnoDB",
+        "mysql_charset": "utf8mb4",
+        "mysql_collate": "utf8mb4_unicode_ci",
+    }
     id = Column(Integer, primary_key=True)
     player_id = Column(Integer)
     match = Column(Integer)
@@ -40,7 +52,11 @@ class Bet(Base):
 
 class User(Base):
     __tablename__ = "users"
-    __table_args__ = {'mysql_engine': 'InnoDB', 'mysql_charset': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_ci'}
+    __table_args__ = {
+        "mysql_engine": "InnoDB",
+        "mysql_charset": "utf8mb4",
+        "mysql_collate": "utf8mb4_unicode_ci",
+    }
     id = Column(Integer, primary_key=True)
     player_id = Column(Integer)
     telegram = Column(String(191))
