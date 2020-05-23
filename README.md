@@ -11,8 +11,6 @@ Copy `.env.exemple` to `.env`
 
 Edit `.env` and set all params 
 
-Start `python Models/betMODEL.py` for initiate database structure
-
 And you will be ready to start it:
 
 `python betBOT.py`

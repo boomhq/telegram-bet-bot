@@ -11,7 +11,7 @@ lang = "en"
 path = os.path.dirname(os.path.abspath(__file__))
 
 
-with open(path + "/../Translations/lang.json") as json_data:
+with open(path + "/../Translations/lang.json", encoding='utf8') as json_data:
     texts = json.load(json_data)
 
 
