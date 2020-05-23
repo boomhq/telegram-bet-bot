@@ -66,6 +66,7 @@ def get_user_step(uid):
         return userStep[uid]
 
 
+
 @bot.message_handler(commands=["bet"])
 def do_bet(message):
     if message.chat.id != message.from_user.id:
@@ -86,15 +87,7 @@ def do_bet(message):
     markup = types.ReplyKeyboardMarkup(row_width=len(matches))
     to_bet = 0
     for m in matches:
-        skip = 0
-        for b in user_bets:
-            if b.match == m.id:
-                skip = 1
-                break
-        if skip == 1:
-            continue
-        else:
-            to_bet += 1
+        to_bet += 1
         markup.add(str(m.id) + " - " + m.title + " - " + m.team1 + " - " + m.team2)
     if not matches or not to_bet:
         bot.send_message(
@@ -138,9 +131,13 @@ def set_match_winner_db(message):
             .first()
     )
     if already_bet:
+        already_bet.bet = message.text
+        already_bet.match = mid[0]
+        update()
         bot.send_message(
-            chat_id, _("You have already bet on this match."), reply_markup=markup
+            chat_id, _("New bet correctly update"), reply_markup=markup
         )
+        userStep[message.from_user.id] = None
         return
     new_bet = Bet(player_id=message.from_user.id, match=mid[0], bet=message.text)
     add(new_bet)
