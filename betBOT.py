@@ -8,6 +8,7 @@ import sys
 import ast
 import datetime
 from Settings.settings import *
+from dotenv import load_dotenv
 
 from telebot import TeleBot, types
 from emoji import emojize
