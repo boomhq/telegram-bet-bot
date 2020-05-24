@@ -1,8 +1,8 @@
 import os
 
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship, lazyload, subqueryload, lazyload_all, subqueryload_all, joinedload
 from sqlalchemy import create_engine
 
 Base = declarative_base()
@@ -37,19 +37,6 @@ class Ranking(Base):
     total = Column(Integer, default=0)
 
 
-class Bet(Base):
-    __tablename__ = "bets"
-    __table_args__ = {
-        "mysql_engine": "InnoDB",
-        "mysql_charset": "utf8mb4",
-        "mysql_collate": "utf8mb4_unicode_ci",
-    }
-    id = Column(Integer, primary_key=True)
-    player_id = Column(Integer)
-    match = Column(Integer)
-    bet = Column(String(50))
-
-
 class User(Base):
     __tablename__ = "users"
     __table_args__ = {
@@ -58,13 +45,29 @@ class User(Base):
         "mysql_collate": "utf8mb4_unicode_ci",
     }
     id = Column(Integer, primary_key=True)
-    player_id = Column(Integer)
+    player_id = Column(Integer, unique=True)
+    bets = relationship("Bet", back_populates="player")
     telegram = Column(String(191))
     notify = Column(Integer)
 
 
+class Bet(Base):
+    __tablename__ = "bets"
+    __table_args__ = {
+        "mysql_engine": "InnoDB",
+        "mysql_charset": "utf8mb4",
+        "mysql_collate": "utf8mb4_unicode_ci",
+    }
+    id = Column(Integer, primary_key=True)
+    player_id = Column(Integer, ForeignKey("users.player_id"))
+    player = relationship("User", back_populates="bets")
+    match = Column(Integer)
+    bet = Column(String(50))
+
+
 schema = os.environ.get("BET_BOT_SCHEMA")
 engine = create_engine(schema)
+
 Base.metadata.create_all(engine)
 
 DBSession = sessionmaker(bind=engine)

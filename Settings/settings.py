@@ -10,6 +10,7 @@ lang = "en"
 path = os.path.dirname(os.path.abspath(__file__))
 enabled_modules = [
     "Helpers",
+    "Users",
     "AddMatch",
     "Bet",
     "DeleteMatch",
@@ -17,7 +18,7 @@ enabled_modules = [
     "ListMatch",
     "SetScore",
     "Top",
-    "Users",
+    "WhoBets"
 ]
 
 with open(path + "/../Translations/lang.json", encoding="utf8") as json_data:

@@ -2,7 +2,16 @@
 def list_bets(message):
     query = get_matches()
     matches = query.filter(Match.score1 == None).all()
-    text = ""
+    text = (
+            "*************************"
+            + " \n"
+            + _("Faites /bet pour vous positionnez sur un match")
+            + " \n"
+            + _("Faites /whobets pour voir les positions des autres personnes")
+            + " \n"
+            + "*************************"
+            + " \n"
+    )
     query = get_bets()
     for m in matches:
         bets = query.filter(Bet.match == m.id).all()
@@ -22,16 +31,18 @@ def list_bets(message):
             odd2 = bets2 * 100 / (bets1 + bets2)
         text += (
                 " *"
+                + "========================="
+                + "\n"
                 + m.title
                 + "* "
                 + "\n"
-                + emoji(":calendar:")
+                + _('Fin de la prise des paris')
                 + date
                 + " "
-                + emoji(":clock1:")
+                + _('at')
                 + hour
                 + " "
-                + emoji(" :fast_forward:")
+                + "\n"
                 + " *"
                 + m.team1
                 + "* "
@@ -44,6 +55,7 @@ def list_bets(message):
                 + "% *"
                 + m.team2
                 + "\n"
+                + "========================="
                 + "*\n"
         )
     if not matches:

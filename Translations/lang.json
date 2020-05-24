@@ -88,6 +88,11 @@
     "You will be notified when a match is added.": "Vous serez notifié des nouveaux matchs ajoutés",
     "Notify when a match is added.": "Etre notifié de l'ajout d'un  match",
     "The format of the date/hour is incorrect.": "le format de la date ou heure est incorrecte",
-    "An error ocurred adding the match.": "Une erreur est apparue lors de l'ajout du match."
+    "An error ocurred adding the match.": "Une erreur est apparue lors de l'ajout du match.",
+    "Fin de la prise des paris": "Fin de la prise des paris le : ",
+    "at": "à : ",
+    "Faites /whobets pour voir les positions des autres personnes": "Faites /whobets pour voir les positions des autres personnes",
+    "Faites /bet pour vous positionnez sur un match": "Faites /bet pour vous positionnez sur un matchs",
+    "Voici les paris enregistre pour ce match": "Voici les paris enregistré pour ce match."
   }
 }
