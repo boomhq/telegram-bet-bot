@@ -62,7 +62,7 @@ commands = {
 
 for module in enabled_modules:
     try:
-        exec(open("./Modules/"+ module + ".py").read())
+        exec(open("./Modules/" + module + ".py").read())
         print("Enabled plugin " + module)
     except:
         print("Error enabling " + module)

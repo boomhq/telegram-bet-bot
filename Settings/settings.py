@@ -9,6 +9,7 @@ load_dotenv()
 lang = "en"
 path = os.path.dirname(os.path.abspath(__file__))
 enabled_modules = [
+    "Helpers",
     "AddMatch",
     "Bet",
     "DeleteMatch",
