@@ -50,7 +50,7 @@ to_bet = {}
 commands = {
     "help": _("Gives you information about the available commands"),
     "bet": _("Add a bet in a match"),
-    "bets": _("Show who have bet why"),
+    "whobets": _("Show who have bet why"),
     "matches": _("Show active matches"),
     "mybets": _("Show your bet stats"),
     "history": _("Show match result history"),
