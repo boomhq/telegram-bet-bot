@@ -21,7 +21,6 @@ def top_10(message):
         textu += username.telegram
         textu += " " * (20 - len(textu)) + " "
         textu += "</pre>"
-        # text += '{0: <15}'.format(username.telegram)
         textu += emoji(":trophy:") + " " + str(ra.wins)
         textu += emoji(":video_game:") + " " + str(ra.total) + "\n"
         text += textu
@@ -42,13 +41,12 @@ def top_10_rate(message):
     text = _("No user with any resolved bet.")
 
     if rankings:
-        text = "🏆 TOP 10 WIN RATE 🏆 \n" if rankings else ""
-        text += "═══════════════════\n"
+        text = emoji(":trophy:") + " " + _("TOP 10 WINS RATE") + " " + emoji(":trophy:") + "\n" if rankings else ""
+        text += "==================\n"
 
     query = get_users()
     for ra in rankings:
         username = query.filter(User.player_id == ra[1]).first()
-        # textu = '{0: <15}'.format(username.telegram)
         textu = "<pre>"
         textu += username.telegram
         textu += " " * (20 - len(textu)) + " "
