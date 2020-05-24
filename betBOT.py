@@ -51,7 +51,7 @@ commands = {
     "help": _("Gives you information about the available commands"),
     "bet": _("Add a bet in a match"),
     "bets": _("Show who have bet why"),
-    "matchs": _("Show active matches"),
+    "matches": _("Show active matches"),
     "mybets": _("Show your bet stats"),
     "history": _("Show match result history"),
     "top10": _("Shows the top 10 players with wins and totale"),

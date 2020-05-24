@@ -1,4 +1,4 @@
-@bot.message_handler(commands=["matchs"])
+@bot.message_handler(commands=["matches", "matchs"])
 def list_bets(message):
     query = get_matches()
     matches = query.filter(Match.score1 == None).all()
