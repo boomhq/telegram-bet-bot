@@ -16,6 +16,7 @@ def top_10(message):
         if count == 10:
             break
         count += 1
+        #@todo fix relation
         username = query.filter(User.player_id == ra.player_id).first()
         textu = "<pre>"
         textu += username.telegram
@@ -46,6 +47,7 @@ def top_10_rate(message):
 
     query = get_users()
     for ra in rankings:
+        #@todo fix relation
         username = query.filter(User.player_id == ra[1]).first()
         textu = "<pre>"
         textu += username.telegram
