@@ -1,6 +1,7 @@
 @bot.message_handler(commands=["start", "help"])
 def send_welcome(message):
     cid = message.chat.id
+    get_user(message)
     query = get_users()
     user = query.filter(User.player_id == message.from_user.id).first()
     help_text = _("Talk me in private to get the command list.")
